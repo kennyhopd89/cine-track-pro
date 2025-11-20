@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import { Project, Asset, ProjectStatus, Festival, Submission } from '@/types';
 import { supabase } from '@/lib/supabase';
+import {
+    mapProjectFromDB, mapProjectToDB,
+    mapAssetFromDB, mapAssetToDB,
+    mapSubmissionFromDB, mapSubmissionToDB,
+    mapFestivalFromDB
+} from '@/lib/mappers';
 
 interface ProjectState {
     projects: Project[];
@@ -51,14 +57,11 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
             if (fRes.error) throw fRes.error;
             if (sRes.error) throw sRes.error;
 
-            // Transform data if necessary (e.g. mapping DB columns to types if they differ)
-            // Assuming 1:1 mapping for now based on schema.sql matching types.ts
-
             set({
-                projects: pRes.data as Project[],
-                assets: aRes.data as Asset[],
-                festivals: fRes.data as Festival[],
-                submissions: sRes.data as Submission[],
+                projects: (pRes.data || []).map(mapProjectFromDB),
+                assets: (aRes.data || []).map(mapAssetFromDB),
+                festivals: (fRes.data || []).map(mapFestivalFromDB),
+                submissions: (sRes.data || []).map(mapSubmissionFromDB),
                 isLoading: false
             });
         } catch (error: any) {
@@ -72,16 +75,19 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 
     addProject: async (project) => {
         // We omit ID and let Supabase generate it.
-        const { data, error } = await supabase.from('projects').insert(project).select().single();
+        const dbData = mapProjectToDB(project);
+        const { data, error } = await supabase.from('projects').insert(dbData).select().single();
         if (error) {
             console.error('Error adding project:', error);
             return;
         }
-        set((state) => ({ projects: [...state.projects, data as Project] }));
+        const newProject = mapProjectFromDB(data);
+        set((state) => ({ projects: [...state.projects, newProject] }));
     },
 
     updateProject: async (id, data) => {
-        const { error } = await supabase.from('projects').update(data).eq('id', id);
+        const dbData = mapProjectToDB(data);
+        const { error } = await supabase.from('projects').update(dbData).eq('id', id);
         if (error) {
             console.error('Error updating project:', error);
             return;
@@ -103,16 +109,19 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     },
 
     addAsset: async (asset) => {
-        const { data, error } = await supabase.from('assets').insert(asset).select().single();
+        const dbData = mapAssetToDB(asset);
+        const { data, error } = await supabase.from('assets').insert(dbData).select().single();
         if (error) {
             console.error('Error adding asset:', error);
             return;
         }
-        set((state) => ({ assets: [...state.assets, data as Asset] }));
+        const newAsset = mapAssetFromDB(data);
+        set((state) => ({ assets: [...state.assets, newAsset] }));
     },
 
     updateAsset: async (id, data) => {
-        const { error } = await supabase.from('assets').update(data).eq('id', id);
+        const dbData = mapAssetToDB(data);
+        const { error } = await supabase.from('assets').update(dbData).eq('id', id);
         if (error) {
             console.error('Error updating asset:', error);
             return;
@@ -134,16 +143,19 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
     },
 
     addSubmission: async (submission) => {
-        const { data, error } = await supabase.from('submissions').insert(submission).select().single();
+        const dbData = mapSubmissionToDB(submission);
+        const { data, error } = await supabase.from('submissions').insert(dbData).select().single();
         if (error) {
             console.error('Error adding submission:', error);
             return;
         }
-        set((state) => ({ submissions: [...state.submissions, data as Submission] }));
+        const newSubmission = mapSubmissionFromDB(data);
+        set((state) => ({ submissions: [...state.submissions, newSubmission] }));
     },
 
     updateSubmission: async (id, data) => {
-        const { error } = await supabase.from('submissions').update(data).eq('id', id);
+        const dbData = mapSubmissionToDB(data);
+        const { error } = await supabase.from('submissions').update(dbData).eq('id', id);
         if (error) {
             console.error('Error updating submission:', error);
             return;
