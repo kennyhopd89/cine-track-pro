@@ -64,7 +64,6 @@ export function ProjectModal({ isOpen, onClose, projectToEdit }: ProjectModalPro
             });
         } else {
             addProject({
-                id: 'p' + Date.now(),
                 title: formData.title,
                 code: formData.code,
                 director: formData.director,

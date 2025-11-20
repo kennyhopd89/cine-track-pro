@@ -53,7 +53,6 @@ export function SubmissionModal({ isOpen, onClose, festival, project, submission
             updateSubmission(submission.id, data);
         } else {
             addSubmission({
-                id: 'sub' + Date.now(),
                 ...data
             });
         }

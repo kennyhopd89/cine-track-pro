@@ -53,7 +53,6 @@ export function AssetModal({ isOpen, onClose, projectId, assetToEdit }: AssetMod
             updateAsset(assetToEdit.id, formData);
         } else {
             addAsset({
-                id: 'a' + Date.now(),
                 pid: projectId,
                 ...formData
             });

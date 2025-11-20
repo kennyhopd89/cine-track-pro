@@ -10,7 +10,7 @@ Lỗi **404: NOT_FOUND** trên Vercel thường xảy ra do ứng dụng không 
 4.  Thêm 2 biến sau (lấy giá trị từ file `.env.local` trong máy của bạn):
 
     *   **Key**: `NEXT_PUBLIC_SUPABASE_URL`
-    *   **Value**: `https://ygdaaxcfjrpdpnidxqtd.supabase.co`
+    *   **Value**: `https://sqeyybvjdrwjvvxtyhqu.supabase.co`
 
     *   **Key**: `NEXT_PUBLIC_SUPABASE_ANON_KEY`
     *   **Value**: (Copy giá trị dài bắt đầu bằng `eyJ...` từ file `.env.local`)
