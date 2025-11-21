@@ -6,6 +6,7 @@ import { GlassPanel } from '@/components/ui/GlassPanel';
 import { Lock, User, ArrowRight } from 'lucide-react';
 
 export function LoginScreen() {
+    // Login screen component
     const { login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
