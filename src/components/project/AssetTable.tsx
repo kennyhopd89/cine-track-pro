@@ -6,6 +6,7 @@ import { MoreHorizontal, Edit, Trash2, Lock } from "lucide-react";
 import { useProjectStore } from "@/store/useProjectStore";
 import { AssetModal } from "@/components/project/AssetModal";
 import { useAuth } from "@/context/auth-context";
+import { ensureUrlProtocol } from "@/lib/utils";
 
 interface AssetTableProps {
     assets: Asset[];
@@ -54,7 +55,7 @@ export function AssetTable({ assets }: AssetTableProps) {
                                             <Lock className="w-3 h-3 mr-2" /> Hidden
                                         </span>
                                     ) : (
-                                        <a href={`https://${asset.url}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline">
+                                        <a href={ensureUrlProtocol(asset.url)} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline">
                                             {asset.url}
                                         </a>
                                     )}
