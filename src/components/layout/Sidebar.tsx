@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Film, LayoutGrid, Plus } from "lucide-react";
+import { Film, LayoutGrid, Plus, LogOut } from "lucide-react";
 import { useProjectStore } from "@/store/useProjectStore";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { ProjectModal } from "@/components/project/ProjectModal";
+import { useAuth } from "@/context/auth-context";
 
 export function Sidebar() {
     const pathname = usePathname();
     const { projects } = useProjectStore();
+    const { user, logout } = useAuth();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -38,12 +40,14 @@ export function Sidebar() {
 
                 <div className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mt-6 mb-2 px-2 flex justify-between items-center">
                     <span>Projects</span>
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="hover:text-white text-zinc-600 transition"
-                    >
-                        <Plus size={14} />
-                    </button>
+                    {user?.role !== 'viewer' && (
+                        <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="hover:text-white text-zinc-600 transition"
+                        >
+                            <Plus size={14} />
+                        </button>
+                    )}
                 </div>
 
                 <div className="space-y-1">
@@ -67,6 +71,25 @@ export function Sidebar() {
                     ))}
                 </div>
             </nav>
+
+            <div className="p-4 border-t border-zinc-800">
+                <div className="flex items-center p-2 rounded-lg bg-zinc-900/50 border border-zinc-800">
+                    <div className="w-8 h-8 rounded bg-indigo-600 flex items-center justify-center text-xs font-bold text-white mr-3">
+                        {user?.avatar_initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className="text-sm font-medium text-white truncate">{user?.name}</div>
+                        <div className="text-xs text-zinc-500 capitalize">{user?.role}</div>
+                    </div>
+                    <button
+                        onClick={logout}
+                        className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition"
+                        title="Sign Out"
+                    >
+                        <LogOut size={16} />
+                    </button>
+                </div>
+            </div>
 
             <ProjectModal
                 isOpen={isModalOpen}
