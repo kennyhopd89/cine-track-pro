@@ -89,23 +89,7 @@ export function LoginScreen() {
                         </button>
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-zinc-800">
-                        <p className="text-xs text-zinc-500 text-center mb-4">Demo Accounts</p>
-                        <div className="grid grid-cols-3 gap-2 text-xs">
-                            <div className="bg-zinc-900/50 p-2 rounded text-center border border-zinc-800">
-                                <div className="font-medium text-white">phu.ho</div>
-                                <div className="text-zinc-500">123</div>
-                            </div>
-                            <div className="bg-zinc-900/50 p-2 rounded text-center border border-zinc-800">
-                                <div className="font-medium text-white">culi</div>
-                                <div className="text-zinc-500">123</div>
-                            </div>
-                            <div className="bg-zinc-900/50 p-2 rounded text-center border border-zinc-800">
-                                <div className="font-medium text-white">khach</div>
-                                <div className="text-zinc-500">123</div>
-                            </div>
-                        </div>
-                    </div>
+
                 </GlassPanel>
             </div>
         </div>
